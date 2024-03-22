@@ -29,19 +29,31 @@
     const code = urlParams.get('code')
     console.log({code});
 
+    const body = {
+        grant_type: "authorization_code",
+        code: code,
+        client_id: "afin-dev-cCjZ53o2W9lLrpbD",
+        redirect_uri: "https://amartha.com",
+        code_verifier: "3eET92bHgC0WRIKgtUIkOiz11sR5ur6fSpPiT3hMWlAt9b0tFTWjqdBHYK-EbaGexuVrQnKuVZGBIc7vd5Ao6w",
+    }
+
+    let formBody = [];
+
+    for (const property in body) {
+        const encodedKey = encodeURIComponent(property);
+        const encodedValue = encodeURIComponent(details[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    console.log({formBody})
+
     fetch("https://auth-dev.amartha.id/realms/amartha/protocol/openid-connect/token", {
         mode: "no-cors",
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
-            grant_type: "authorization_code",
-            code: code,
-            client_id: "afin-dev-cCjZ53o2W9lLrpbD",
-            redirect_uri: "https://amartha.com",
-            code_verifier: "3eET92bHgC0WRIKgtUIkOiz11sR5ur6fSpPiT3hMWlAt9b0tFTWjqdBHYK-EbaGexuVrQnKuVZGBIc7vd5Ao6w",
-        })
+        body: formBody,
     })
         .then(response => response.json())
         .then(responseJson => renderResponse(responseJson))
