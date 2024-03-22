@@ -26,7 +26,7 @@
 
     const urlParams = new URLSearchParams(queryString);
 
-    const code = urlParams.get('code')
+    const code = urlParams.get('code');
     console.log({code});
 
     const body = {
@@ -35,7 +35,7 @@
         client_id: "afin-dev-cCjZ53o2W9lLrpbD",
         redirect_uri: "https://feryadialoi.github.io/afin-token-exchanger",
         code_verifier: "3eET92bHgC0WRIKgtUIkOiz11sR5ur6fSpPiT3hMWlAt9b0tFTWjqdBHYK-EbaGexuVrQnKuVZGBIc7vd5Ao6w",
-    }
+    };
 
     let formBody = [];
 
@@ -45,19 +45,26 @@
         formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
-    console.log({formBody})
+    console.log({formBody});
 
     fetch("https://auth-dev.amartha.id/realms/amartha/protocol/openid-connect/token", {
         mode: "no-cors",
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json"
         },
         body: formBody,
     })
-        .then(response => response.json())
-        .then(responseJson => renderResponse(responseJson))
-        .catch(error => console.error("error exchange:",error))
+        .then(response => {
+            const json = response.text();
+            console.log({json});
+            return json;
+        })
+        .then(responseJson => {
+            renderResponse(JSON.parse(responseJson));
+        })
+        .catch(error => console.error("error exchange:",error));
 
     function renderResponse(responseJson) {
         document.querySelector("#access_token").textContent = responseJson["access_token"]
