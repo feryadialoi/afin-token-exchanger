@@ -57,6 +57,7 @@
     })
         .then(response => response.json())
         .then(responseJson => renderResponse(responseJson))
+        .catch(error => console.error("error exchange:",error))
 
     function renderResponse(responseJson) {
         document.querySelector("#access_token").textContent = responseJson["access_token"]
