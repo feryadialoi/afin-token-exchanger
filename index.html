@@ -41,7 +41,7 @@
 
     for (const property in body) {
         const encodedKey = encodeURIComponent(property);
-        const encodedValue = encodeURIComponent(details[property]);
+        const encodedValue = encodeURIComponent(body[property]);
         formBody.push(encodedKey + "=" + encodedValue);
     }
     formBody = formBody.join("&");
