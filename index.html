@@ -30,6 +30,7 @@
     console.log({code});
 
     fetch("https://auth-dev.amartha.id/realms/amartha/protocol/openid-connect/token", {
+        mode: "no-cors",
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
