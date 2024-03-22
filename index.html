@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AFIN Token Exchanger</title>
+</head>
+<body>
+<div>
+    <H3>AFIN Token Exchanger</H3>
+    <div>
+        <div>Access Token</div>
+        <div id="access_token"></div>
+    </div>
+    <div>
+        <div>Refresh Token</div>
+        <div id="refresh_token"></div>
+    </div>
+</div>
+</body>
+<script>
+    const queryString = window.location.search;
+    console.log({queryString})
+
+    const urlParams = new URLSearchParams(queryString);
+
+    const code = urlParams.get('code')
+    console.log({code});
+
+    fetch("http://auth-dev.amartha.id/realms/amartha/protocol/openid-connect/token", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: JSON.stringify({
+            grant_type: "authorization_code",
+            code: code,
+            client_id: "afin-dev-cCjZ53o2W9lLrpbD",
+            redirect_uri: "https://amartha.com",
+            code_verifier: "3eET92bHgC0WRIKgtUIkOiz11sR5ur6fSpPiT3hMWlAt9b0tFTWjqdBHYK-EbaGexuVrQnKuVZGBIc7vd5Ao6w",
+        })
+    })
+        .then(response => response.json())
+        .then(responseJson => renderResponse(responseJson))
+
+    function renderResponse(responseJson) {
+        document.querySelector("#access_token").textContent = responseJson["access_token"]
+        document.querySelector("#refresh_token").textContent = responseJson["refresh_token"]
+    }
+
+</script>
+</html>
